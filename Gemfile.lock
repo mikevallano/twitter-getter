@@ -65,7 +65,6 @@ GEM
     buftok (0.2.0)
     builder (3.2.4)
     byebug (11.1.1)
-    coderay (1.1.2)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
     devise (4.7.1)
@@ -136,9 +135,6 @@ GEM
       rack
     orm_adapter (0.5.0)
     pg (1.2.2)
-    pry (0.12.2)
-      coderay (~> 1.1.0)
-      method_source (~> 0.9.0)
     public_suffix (4.0.3)
     puma (4.3.1)
       nio4r (~> 2.0)
@@ -206,9 +202,6 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
     twitter (7.0.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
@@ -253,13 +246,11 @@ DEPENDENCIES
   omniauth
   omniauth-twitter
   pg (>= 0.18, < 2.0)
-  pry
   puma (~> 4.1)
   rails (~> 6.0.2, >= 6.0.2.1)
   sass-rails (>= 6)
   spring
   spring-watcher-listen (~> 2.0.0)
-  turbolinks (~> 5)
   twitter
   tzinfo-data
   web-console (>= 3.3.0)
