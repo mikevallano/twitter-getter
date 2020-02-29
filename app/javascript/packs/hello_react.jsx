@@ -5,6 +5,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import { TwitterTweetEmbed } from 'react-twitter-embed'
+
 
 const Hello = props => (
   <div className='container'>Hello {props.name}!</div>
@@ -20,7 +22,18 @@ Hello.propTypes = {
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Hello name="React" />,
+    // <Hello name="React" />,
+    <TwitterTweetEmbed
+      tweetId={'1232613076630953984'}
+      options={{theme: 'dark'}}
+    />,
     document.body.appendChild(document.createElement('div')),
+    // twttr.widgets.createTweet(
+    //   '1232613076630953984',
+    //   document.getElementById('twits'),
+    //   {
+    //     theme: 'dark'
+    //   }
+    // )
   )
 })
