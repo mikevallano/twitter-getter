@@ -1,5 +1,5 @@
 .tag-form {
-  margin-top: -10px !important;
+  // margin-top: -10px !important;
   margin-bottom: 30px !important;
   width: 500px !important;
 
@@ -7,4 +7,20 @@
     border-color: rgba(#1da1f2, 0.25);
     text-indent: 10px;
   }
+}
+
+.tags-container {
+  width: 500px;
+  height: 30px;
+  margin-top: -10px;
+  border-radius: 3px;
+  border: 1px solid rgba(#1da1f2, 0.25);
+  padding-left: 15px;
+}
+
+.tag-container {
+  padding: 7px;
+  margin-right: 3px;
+  border: 1px solid rgba(#1da1f2, 0.25);
+  border-radius: 3px;
 }
