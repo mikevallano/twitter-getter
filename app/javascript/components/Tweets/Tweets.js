@@ -10,10 +10,12 @@ class Tweets extends React.Component {
       current_user_id: []
     }
   }
+
   componentDidMount() {
+    // Internal api requet to get users' favorites. Return paginated or infinite scroll, along with user_id.
     this.setState({
       tweets:
-      [{tweet_id: '1233544464783814657'}, {tweet_id: '1234452353996161028'}, {tweet_id: '1232613076630953984'}, {tweet_id: '1231208173597548546'}],
+      [{tweet_id: '1234452353996161028'}, {tweet_id: '1233544464783814657'}, {tweet_id: '1232613076630953984'}, {tweet_id: '1231208173597548546'}],
       current_user_id: 1,
     })
   }
@@ -22,8 +24,7 @@ class Tweets extends React.Component {
   const tweets = this.state.tweets.map(tweet => {
     return(
       <React.Fragment>
-        <Tweet tweet_id={tweet.tweet_id} key={tweet.tweet_id}/>
-        <TagForm tweet_id={tweet.tweet_id} user_id={this.state.current_user_id}/>
+        <Tweet tweet_id={tweet.tweet_id} key={tweet.tweet_id} user_id={this.state.current_user_id}/>
       </React.Fragment>
     )
   })
