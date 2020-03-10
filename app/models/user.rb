@@ -22,4 +22,8 @@ class User < ApplicationRecord
   def email_required?
     false # some twitter users won't have an email. should probably distinguish twitter auth users. TODO
   end
+
+  def most_recently_liked_tweet_id
+    liked_tweets.order(tweet_id: :desc).first&.tweet_id
+  end
 end
