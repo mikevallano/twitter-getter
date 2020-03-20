@@ -24,6 +24,6 @@ class User < ApplicationRecord
   end
 
   def most_recently_liked_tweet_id
-    liked_tweets.order(tweet_id: :desc).first&.tweet_id
+    liked_tweets.ordered.first&.tweet_id
   end
 end

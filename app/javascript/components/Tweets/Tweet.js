@@ -20,7 +20,7 @@ class Tweet extends React.Component {
           <span className="tag-container">tag one (x)</span>
           <span className="tag-container">tag two (x)</span>
         </div>
-        <TagForm tweet_id={this.props.tweet_id} user_id={this.props.current_user_id}/>
+        <TagForm tweet_id={this.props.tweet_id} user_id={this.props.current_user_id} key={this.props.tweet_id}/>
       </React.Fragment>
     )
   }
