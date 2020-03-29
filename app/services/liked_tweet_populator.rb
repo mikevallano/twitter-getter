@@ -7,9 +7,9 @@ class LikedTweetPopulator
   def fetch_recently_liked_tweets
     returned_tweets = TwitterApi.new.get_favorites(
       username: user.username,
-      since_id: user.most_recent_liked_tweet_id
+      since_id: user.most_recently_liked_tweet_id || '1'
     )
-    created_liked_tweets(returned_tweets.map{|obj| obj.id}) if returned_tweets.any? #?
+    created_liked_tweets(tweet_ids: returned_tweets.map{|obj| obj.id}) if returned_tweets.any? #?
   end
 
   def created_liked_tweets(tweet_ids:)
@@ -20,6 +20,7 @@ class LikedTweetPopulator
         created_at: Time.current,
         updated_at: Time.current
       }
+    end
     LikedTweet.insert_all(liked_tweet_data)
   end
 end

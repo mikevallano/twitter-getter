@@ -9,7 +9,7 @@ class Tweets extends React.Component {
     this.state = {
       tweets: [],
       tweet_ids: [],
-      current_user_id: []
+      current_user_id: null
     }
   }
 
@@ -18,7 +18,14 @@ class Tweets extends React.Component {
     axios.get('/api/v1/tweets.json')
     .then(res => {
       this.setState({
-        tweet_ids: res.data.map(tweet => `${tweet.tweet_id}`), // should do this on the backend
+        // tweet_ids: res.data.map(tweet => `${tweet.tweet_id}`), // should do this on the backend
+        tweet_ids: [
+          '1234452353996161028',
+          '1233544464783814657',
+          '1232613076630953984',
+          '1231208173597548546',
+          '1230476629861900288'
+        ],
         current_user_id: 1
       })
     })
@@ -29,23 +36,23 @@ class Tweets extends React.Component {
 
   render(){
     console.log('tweet_ids: ', this.state.tweet_ids)
-  const tweets = this.state.tweet_ids.map((tweet_id, index) => {
-    return(
-      <React.Fragment>
+    console.log('current_user_id: ', this.state.current_user_id)
+    const tweets = this.state.tweet_ids.map((tweet_id, index) => {
+      return(
         <Tweet tweet_id={tweet_id} key={`${tweet_id}_${index}`} user_id={this.state.current_user_id}/>
+      )
+    })
+
+    return (
+      <React.Fragment>
+        <div className="container" >
+          <h1>Tweets!</h1>
+          {tweets}
+        </div>
       </React.Fragment>
     )
-  })
+  }
+}
 
-  return (
-    <React.Fragment>
-      <div className="container" >
-        <h1>Tweets!</h1>
-        {tweets}
-      </div>
-    </React.Fragment>
-  )
-}
-}
 
 export default Tweets
