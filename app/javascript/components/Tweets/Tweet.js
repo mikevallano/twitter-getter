@@ -14,13 +14,13 @@ class Tweet extends React.Component {
   render(){
     return (
       <React.Fragment>
-        <EmbededTweet tweet_id={this.props.tweet_id} />
+        <EmbededTweet tweet_id={this.props.tweet_id}/>
         <div className="tags-container" >
           Tags:
           <span className="tag-container">tag one (x)</span>
           <span className="tag-container">tag two (x)</span>
         </div>
-        <TagForm tweet_id={this.props.tweet_id} user_id={this.props.current_user_id}/>
+        <TagForm tweet_id={this.props.tweet_id} user_id={this.props.user_id}/>
       </React.Fragment>
     )
   }

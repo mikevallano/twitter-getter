@@ -5,6 +5,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import Tweet from '../components/Tweets/Tweet'
 import { TwitterTweetEmbed } from 'react-twitter-embed'
 
 
@@ -23,11 +24,10 @@ Hello.propTypes = {
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     // <Hello name="React" />,
-    <TwitterTweetEmbed
-      tweetId={'1232613076630953984'}
-      options={{theme: 'dark'}}
-    />,
+    <Tweet tweet_id={'1232613076630953984'} user_id={1}/>,
     document.body.appendChild(document.createElement('div')),
+    // to use twttr.widgets, the twitter JS needs to be included in layout or somewhere:  
+    // <script sync src="https://platform.twitter.com/widgets.js"></script>
     // twttr.widgets.createTweet(
     //   '1232613076630953984',
     //   document.getElementById('twits'),
