@@ -7,13 +7,14 @@ class TagForm extends React.Component {
     this.state = {
       tweet_id: '',
       tags: [],
-      tag_names: ''
+      tag_names: '',
+      taggings: []
     }
   }
 
   handleChange = event => {
-    console.log('event.target: ', event.target)
-    console.log('event.target.parent: ', event.target.parent)
+    // console.log('event.target: ', event.target)
+    // console.log('event.target.parent: ', event.target.parent)
     this.setState({ tag_names: event.target.value });
   }
 
@@ -29,8 +30,12 @@ class TagForm extends React.Component {
 
     axios.post('/api/v1/taggings', {tagging})
       .then(res => {
-        console.log('res: ', res)
-        console.log('res.data: ', res.data)
+        var currentTaggings = this.props.taggings
+        this.setState({
+          taggings: res.data.data.forEach(obj => {
+            currentTaggings.push(obj.attributes)
+          })
+        })
       })
   }
 
