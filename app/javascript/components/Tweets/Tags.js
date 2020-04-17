@@ -13,7 +13,7 @@ class Tags extends React.Component {
     const tags = this.props.taggings.map((tagging) => {
       console.log('tagging: ', tagging)
       return(
-        <Tag name={tagging.tag_name} key={tagging.id} id={tagging.id} tagging_id={tagging.id}/>
+        <Tag name={tagging.tag_name} key={tagging.id} id={tagging.id} tagging_id={tagging.id} handleTaggingDelete={this.props.handleTaggingDelete}/>
       )
     })
 

@@ -17,7 +17,6 @@ class Tweets extends React.Component {
     // Internal api requet to get users' favorites. Return paginated or infinite scroll, along with user_id.
     axios.get('/api/v1/tweets.json')
     .then(res => {
-      console.log('res.data.data: ', res.data.data)
       this.setState({
         // tweet_ids: [
         //   '1234452353996161028',
@@ -37,7 +36,6 @@ class Tweets extends React.Component {
 
   render(){
     const tweets = this.state.liked_tweets.map((liked_tweet) => {
-      console.log('liked_tweet: ', liked_tweet)
       return(
         <Tweet tweet_id={liked_tweet.attributes.tweet_id} key={liked_tweet.attributes.tweet_id} user_id={this.state.user_id} tags={liked_tweet.attributes.tags} taggings={liked_tweet.attributes.taggings}/>
       )
