@@ -9,11 +9,31 @@ class Tweets extends React.Component {
     this.state = {
       tweet_ids: [],
       liked_tweets: [],
-      user_id: null
+      user_id: null,
+      formTagNames: ''
     }
   }
 
-  componentDidMount() {
+  handleTagSubmit = (tagging) => {
+    axios.post('/api/v1/taggings', {tagging})
+    .then(res => {
+      this.fetchTweets()
+    })
+  }
+
+  handleTaggingDelete = (tagging_id) => {
+    axios
+      .delete(`/api/v1/taggings/${tagging_id}.json`)
+      .then(res => {
+        this.fetchTweets()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  fetchTweets = () => {
+    console.log('fetchTweets called')
     // Internal api requet to get users' favorites. Return paginated or infinite scroll, along with user_id.
     axios.get('/api/v1/tweets.json')
     .then(res => {
@@ -34,10 +54,14 @@ class Tweets extends React.Component {
     })
   }
 
+  componentDidMount() {
+    this.fetchTweets()
+  }
+
   render(){
     const tweets = this.state.liked_tweets.map((liked_tweet) => {
       return(
-        <Tweet tweet_id={liked_tweet.attributes.tweet_id} key={liked_tweet.attributes.tweet_id} user_id={this.state.user_id} tags={liked_tweet.attributes.tags} taggings={liked_tweet.attributes.taggings}/>
+        <Tweet tweet_id={liked_tweet.attributes.tweet_id} key={liked_tweet.attributes.tweet_id} user_id={this.state.user_id} tags={liked_tweet.attributes.tags} taggings={liked_tweet.attributes.taggings} handleTagSubmit={this.handleTagSubmit} handleTaggingDelete={this.handleTaggingDelete}/>
       )
     })
 
