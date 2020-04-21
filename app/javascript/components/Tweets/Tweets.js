@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Tweet from './Tweet'
 import TagForm from './TagForm'
 import TagFilter from './TagFilter'
+import FetchRecentTweetsButton from './FetchRecentTweetsButton'
 import axios from 'axios'
 
 class Tweets extends React.Component {
@@ -17,7 +18,15 @@ class Tweets extends React.Component {
   }
 
   handleTagSubmit = (tagging) => {
-    axios.post('/api/v1/taggings', {tagging})
+    axios.post('/api/v1/taggings.json', {tagging})
+    .then(res => {
+      this.fetchTweets()
+    })
+  }
+
+  handleFetchRecentTweets = () => {
+    console.log('handleFetchRecentTweets called')
+    axios.post('/api/v1/tweets.json', {user_id: this.state.user_id})
     .then(res => {
       this.fetchTweets()
     })
@@ -83,6 +92,7 @@ class Tweets extends React.Component {
       <React.Fragment>
         <div className="container" >
           <h1>Tweets!</h1>
+          <FetchRecentTweetsButton handleFetchRecentTweets={this.handleFetchRecentTweets}/>
           { this.state.filteredTagName ?
             <TagFilter filteredTagName={this.state.filteredTagName} handleTagFilterClear={this.handleTagFilterClear}/>
             : ''
