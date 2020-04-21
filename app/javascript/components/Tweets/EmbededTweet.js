@@ -6,7 +6,7 @@ class EmbededTweet extends React.Component {
     return (
       <React.Fragment>
         <TwitterTweetEmbed
-          tweetId={this.props.tweet_id}
+          tweetId={this.props.tweetId}
           options={{}}
         />
       </React.Fragment>

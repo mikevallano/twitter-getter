@@ -30,9 +30,7 @@ class TagForm extends React.Component {
       <React.Fragment>
         <div className="form-group tag-form">
           <form onSubmit={this.submitForm} className="tag-tester">
-            <input type="text" name="tag_names" value={this.state.formTagNames} className="form-control" placeholder="add tags" onChange={this.formChange} />
-            <input type="hidden" name="tweet_id" value={this.props.tweet_id} />
-            <input type="hidden" name="user_id" value={this.props.user_id} />
+            <input type="text" value={this.state.formTagNames} className="form-control" placeholder="add tags" onChange={this.formChange} />
           </form>
         </div>
       </React.Fragment>

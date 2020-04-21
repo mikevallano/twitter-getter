@@ -9,10 +9,8 @@ class Tweets extends React.Component {
   constructor() {
     super()
     this.state = {
-      tweet_ids: [],
-      liked_tweets: [],
-      user_id: null,
-      formTagNames: '',
+      likedTweets: [],
+      userId: null,
       filteredTagName: null
     }
   }
@@ -25,8 +23,7 @@ class Tweets extends React.Component {
   }
 
   handleFetchRecentTweets = () => {
-    console.log('handleFetchRecentTweets called')
-    axios.post('/api/v1/tweets.json', {user_id: this.state.user_id})
+    axios.post('/api/v1/tweets.json', {user_id: this.state.userId})
     .then(res => {
       this.fetchTweets()
     })
@@ -55,21 +52,12 @@ class Tweets extends React.Component {
   }
 
   fetchTweets = (tagName) => {
-    console.log('fetchTweets called')
-    // Internal api requet to get users' favorites. Return paginated or infinite scroll, along with user_id.
     let url = tagName ? `/api/v1/tweets.json?tag=${tagName}` : '/api/v1/tweets.json'
     axios.get(url)
     .then(res => {
       this.setState({
-        // tweet_ids: [
-        //   '1234452353996161028',
-        //   '1233544464783814657'
-        // ],
-        tweet_ids: res.data.data.map(obj => {
-          return obj.attributes.tweet_id
-        }),
-        liked_tweets: res.data.data,
-        user_id: res.data.data[0].attributes.user_id // dont think this is needed
+        likedTweets: res.data.data,
+        userId: res.data.data[0].attributes.user_id // dont think this is needed
       })
     })
     .catch(res => {
@@ -82,9 +70,9 @@ class Tweets extends React.Component {
   }
 
   render(){
-    const tweets = this.state.liked_tweets.map((liked_tweet) => {
+    const tweets = this.state.likedTweets.map((likedTweet) => {
       return(
-        <Tweet tweet_id={liked_tweet.attributes.tweet_id} key={liked_tweet.attributes.tweet_id} user_id={this.state.user_id} tags={liked_tweet.attributes.tags} taggings={liked_tweet.attributes.taggings} handleTagSubmit={this.handleTagSubmit} handleTaggingDelete={this.handleTaggingDelete} handleTagClick={this.handleTagClick}/>
+        <Tweet tweetId={likedTweet.attributes.tweet_id} key={likedTweet.attributes.tweet_id} userId={this.state.userId} tags={likedTweet.attributes.tags} taggings={likedTweet.attributes.taggings} handleTagSubmit={this.handleTagSubmit} handleTaggingDelete={this.handleTaggingDelete} handleTagClick={this.handleTagClick}/>
       )
     })
 

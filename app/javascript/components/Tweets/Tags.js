@@ -16,7 +16,7 @@ class Tags extends React.Component {
           name={tagging.tag_name}
           key={tagging.id}
           id={tagging.id}
-          tagging_id={tagging.id}
+          taggingId={tagging.id}
           handleTaggingDelete={this.props.handleTaggingDelete}
           handleTagClick={this.props.handleTagClick}
         />

@@ -5,26 +5,18 @@ import Tags from './Tags'
 import axios from 'axios'
 
 class Tweet extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      formTagNames: '',
-      taggings: []
-    }
-  }
-
   render(){
     return (
       <React.Fragment>
-        <EmbededTweet tweet_id={this.props.tweet_id}/>
+        <EmbededTweet tweetId={this.props.tweetId}/>
         <Tags
           taggings={this.props.taggings}
           handleTaggingDelete={this.props.handleTaggingDelete}
           handleTagClick={this.props.handleTagClick}
         />
         <TagForm
-          tweet_id={this.props.tweet_id}
-          user_id={this.props.user_id}
+          tweet_id={this.props.tweetId}
+          user_id={this.props.userId}
           tags={this.props.tags}
           taggings={this.props.taggings}
           handleTagSubmit={this.props.handleTagSubmit}
