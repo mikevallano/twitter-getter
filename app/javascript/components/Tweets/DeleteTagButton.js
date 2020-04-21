@@ -12,7 +12,7 @@ class DeleteTagButton extends React.Component {
   render(){
     return (
       <React.Fragment>
-        <span className='delete-btn' onClick={this.handleDelete}>
+        <span className='clicky' onClick={this.handleDelete}>
           (x)
         </span>
       </React.Fragment>

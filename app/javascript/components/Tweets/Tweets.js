@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Tweet from './Tweet'
 import TagForm from './TagForm'
+import TagFilter from './TagFilter'
 import axios from 'axios'
 
 class Tweets extends React.Component {
@@ -10,7 +11,8 @@ class Tweets extends React.Component {
       tweet_ids: [],
       liked_tweets: [],
       user_id: null,
-      formTagNames: ''
+      formTagNames: '',
+      filteredTagName: null
     }
   }
 
@@ -22,12 +24,17 @@ class Tweets extends React.Component {
   }
 
   handleTagClick = (tagName) => {
-    console.log(`tagName: ${tagName}`)
     this.fetchTweets(tagName)
+    this.state.filteredTagName = tagName
+    window.scrollTo(0, 0);
+  }
+
+  handleTagFilterClear = () => {
+    this.fetchTweets()
+    this.state.filteredTagName = null
   }
 
   handleTaggingDelete = (tagging_id) => {
-    console.log(`tagging_id: ${tagging_id}`)
     axios
       .delete(`/api/v1/taggings/${tagging_id}.json`)
       .then(res => {
@@ -76,6 +83,10 @@ class Tweets extends React.Component {
       <React.Fragment>
         <div className="container" >
           <h1>Tweets!</h1>
+          { this.state.filteredTagName ?
+            <TagFilter filteredTagName={this.state.filteredTagName} handleTagFilterClear={this.handleTagFilterClear}/>
+            : ''
+          }
           {tweets}
         </div>
       </React.Fragment>
