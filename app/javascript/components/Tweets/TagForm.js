@@ -17,7 +17,7 @@ class TagForm extends React.Component {
       liked_tweet_id: this.props.tweet_id
     }
 
-    this.props.handleTagSubmit(tagging)
+    this.props.createTagging(tagging)
     this.setState({ formTagNames: ''})
   }
 

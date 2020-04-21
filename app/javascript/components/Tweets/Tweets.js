@@ -15,32 +15,32 @@ class Tweets extends React.Component {
     }
   }
 
-  handleTagSubmit = (tagging) => {
+  createTagging = (tagging) => {
     axios.post('/api/v1/taggings.json', {tagging})
     .then(res => {
       this.fetchTweets()
     })
   }
 
-  handleFetchRecentTweets = () => {
+  fetchRecentTweets = () => {
     axios.post('/api/v1/tweets.json', {user_id: this.state.userId})
     .then(res => {
       this.fetchTweets()
     })
   }
 
-  handleTagClick = (tagName) => {
+  filterByTagName = (tagName) => {
     this.fetchTweets(tagName)
     this.state.filteredTagName = tagName
     window.scrollTo(0, 0);
   }
 
-  handleTagFilterClear = () => {
+  clearTagFilter = () => {
     this.fetchTweets()
     this.state.filteredTagName = null
   }
 
-  handleTaggingDelete = (tagging_id) => {
+  deleteTagging = (tagging_id) => {
     axios
       .delete(`/api/v1/taggings/${tagging_id}.json`)
       .then(res => {
@@ -72,7 +72,7 @@ class Tweets extends React.Component {
   render(){
     const tweets = this.state.likedTweets.map((likedTweet) => {
       return(
-        <Tweet tweetId={likedTweet.attributes.tweet_id} key={likedTweet.attributes.tweet_id} userId={this.state.userId} tags={likedTweet.attributes.tags} taggings={likedTweet.attributes.taggings} handleTagSubmit={this.handleTagSubmit} handleTaggingDelete={this.handleTaggingDelete} handleTagClick={this.handleTagClick}/>
+        <Tweet tweetId={likedTweet.attributes.tweet_id} key={likedTweet.attributes.tweet_id} userId={this.state.userId} tags={likedTweet.attributes.tags} taggings={likedTweet.attributes.taggings} createTagging={this.createTagging} deleteTagging={this.deleteTagging} filterByTagName={this.filterByTagName}/>
       )
     })
 
@@ -80,9 +80,9 @@ class Tweets extends React.Component {
       <React.Fragment>
         <div className="container" >
           <h1>Tweets!</h1>
-          <FetchRecentTweetsButton handleFetchRecentTweets={this.handleFetchRecentTweets}/>
+          <FetchRecentTweetsButton fetchRecentTweets={this.fetchRecentTweets}/>
           { this.state.filteredTagName ?
-            <TagFilter filteredTagName={this.state.filteredTagName} handleTagFilterClear={this.handleTagFilterClear}/>
+            <TagFilter filteredTagName={this.state.filteredTagName} clearTagFilter={this.clearTagFilter}/>
             : ''
           }
           {tweets}
