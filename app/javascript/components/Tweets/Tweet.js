@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import EmbededTweet from './EmbededTweet'
 import TagForm from './TagForm'
 import Tags from './Tags'
-import axios from 'axios'
 
 class Tweet extends React.Component {
   render(){
