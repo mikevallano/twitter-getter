@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :tweets, only: :index
+      resources :tweets, only: %i[index create]
+      resources :taggings, only: %i[index create destroy]
     end
   end
 end

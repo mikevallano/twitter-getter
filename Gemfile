@@ -17,6 +17,8 @@ gem 'webpacker', '~> 4.0'
 gem 'jbuilder', '~> 2.7'
 
 gem 'devise'
+gem 'fast_jsonapi'
+gem 'pry'
 gem 'twitter'
 gem 'omniauth'
 gem 'omniauth-twitter'

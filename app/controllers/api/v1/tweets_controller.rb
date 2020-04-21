@@ -1,7 +1,17 @@
 class Api::V1::TweetsController < Api::V1::BaseController
   def index
-    tweet_ids = current_user.liked_tweets.sample(5).pluck(:tweet_id).map(&:to_s)
+    tag = Tag.find_by(name: params[:tag])
 
-    render json: {tweet_ids: tweet_ids, user_id: current_user.id}
+    tweets = if tag
+      tag.liked_tweets.where(user: current_user).includes(:tags).ordered.first(25)
+    else
+      current_user.liked_tweets.includes(:tags).ordered.first(25)
+    end
+
+    render json: LikedTweetSerializer.new(tweets)
+  end
+
+  def create
+    LikedTweetPopulator.new(user: current_user).fetch_recently_liked_tweets
   end
 end
