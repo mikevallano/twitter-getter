@@ -52,7 +52,8 @@ class Tweets extends React.Component {
   }
 
   fetchTweets = (tagName) => {
-    let url = tagName ? `/api/v1/tweets.json?tag=${tagName}` : '/api/v1/tweets.json'
+    const limit = 25
+    let url = tagName ? `/api/v1/tweets.json?tag=${tagName}&limit=${limit}` : `/api/v1/tweets.json?limit=${limit}`
     axios.get(url)
     .then(res => {
       this.setState({
