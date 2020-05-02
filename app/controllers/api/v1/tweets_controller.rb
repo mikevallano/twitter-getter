@@ -1,5 +1,5 @@
 class Api::V1::TweetsController < Api::V1::BaseController
-  DEFAULT_LIMIT = 25
+  DEFAULT_LIMIT = 5
 
   def index
     tag = Tag.find_by(name: params[:tag])

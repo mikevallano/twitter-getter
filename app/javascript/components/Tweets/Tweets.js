@@ -11,7 +11,10 @@ class Tweets extends React.Component {
     this.state = {
       likedTweets: [],
       userId: null,
-      filteredTagName: null
+      filteredTagName: null,
+      page: 1,
+      totalPages: null,
+      loading: false
     }
   }
 
@@ -31,13 +34,13 @@ class Tweets extends React.Component {
 
   filterByTagName = (tagName) => {
     this.fetchTweets(tagName)
-    this.state.filteredTagName = tagName
+    this.state.filteredTagName = tagName // should be setState ?
     window.scrollTo(0, 0);
   }
 
   clearTagFilter = () => {
     this.fetchTweets()
-    this.state.filteredTagName = null
+    this.state.filteredTagName = null // should be setState ?
   }
 
   deleteTagging = (tagging_id) => {
@@ -52,13 +55,15 @@ class Tweets extends React.Component {
   }
 
   fetchTweets = (tagName) => {
-    const limit = 25
-    let url = tagName ? `/api/v1/tweets.json?tag=${tagName}&limit=${limit}` : `/api/v1/tweets.json?limit=${limit}`
+    const {likedTweets, page, totalPages} = this.state
+    let url = tagName ? `/api/v1/tweets.json?tag=${tagName}&page=${page}` : `/api/v1/tweets.json?page=${page}`
     axios.get(url)
     .then(res => {
       this.setState({
-        likedTweets: res.data.data,
-        userId: res.data.data[0].attributes.user_id // dont think this is needed
+        likedTweets: [...likedTweets, ...res.data.data],
+        totalPages: res.data.total_pages,
+        userId: res.data.data[0].attributes.user_id, // dont think this is needed
+        loading: false
       })
     })
     .catch(res => {
@@ -66,8 +71,31 @@ class Tweets extends React.Component {
     })
   }
 
+  handleScroll = (e) => {
+    const {loading, page, totalPages} = this.state
+    if (loading) return
+    if (page > totalPages) return
+    const pageBottom = document.getElementById('page-bottom')
+    const pageBottomOffset = pageBottom.offsetTop + pageBottom.clientHeight
+    const pageOffset = window.pageYOffset + window.innerHeight
+    const bottomBuffer = 50 // in px. buffer to prevent having to scroll to very bottom
+    if (pageOffset > pageBottomOffset - bottomBuffer) {
+      this.loadMore()
+    }
+  }
+
+  loadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+      loading: true
+    }), this.fetchTweets)
+  }
+
   componentDidMount() {
     this.fetchTweets()
+    this.scrollListener = window.addEventListener('scroll', (e) => {
+      this.handleScroll(e)
+    })
   }
 
   render(){
@@ -88,6 +116,7 @@ class Tweets extends React.Component {
           }
           {tweets}
         </div>
+        <span id="page-bottom"></span>
       </React.Fragment>
     )
   }
