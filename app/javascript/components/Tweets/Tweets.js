@@ -28,7 +28,12 @@ class Tweets extends React.Component {
   fetchRecentTweets = () => {
     axios.post('/api/v1/tweets.json', {user_id: this.state.userId})
     .then(res => {
-      this.fetchTweets()
+      this.setState({
+        page: 1,
+        filteredTagName: null,
+        loading: true,
+        likedTweets: []
+      }, this.fetchTweets)
     })
   }
 
