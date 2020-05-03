@@ -19,7 +19,6 @@ class Tweets extends React.Component {
   }
 
   createTagging = (tagging) => {
-    console.log({tagging})
     axios.post('/api/v1/taggings.json', {tagging})
     .then(res => {
       this.fetchTweet(tagging.liked_tweet_id)
@@ -34,18 +33,25 @@ class Tweets extends React.Component {
   }
 
   filterByTagName = (tagName) => {
-    this.fetchTweets(tagName)
-    this.state.filteredTagName = tagName // should be setState ?
     window.scrollTo(0, 0);
+    this.setState({
+      page: 1,
+      filteredTagName: tagName,
+      loading: true,
+      likedTweets: []
+    }, this.fetchTweets)
   }
 
   clearTagFilter = () => {
-    this.fetchTweets()
-    this.state.filteredTagName = null // should be setState ?
+    this.setState({
+      page: 1,
+      filteredTagName: null,
+      loading: true,
+      likedTweets: []
+    }, this.fetchTweets)
   }
 
   deleteTagging = (tagging) => {
-    console.log({tagging})
     axios
       .delete(`/api/v1/taggings/${tagging.id}.json`)
       .then(res => {
@@ -59,7 +65,6 @@ class Tweets extends React.Component {
   fetchTweet = (tweetId) => {
     axios.get(`/api/v1/tweets/${tweetId}.json`)
     .then(res => {
-      console.log({res})
       const updatedTweets = [...this.state.likedTweets].map(likedTweet => {
         if (res.data.data.id == likedTweet.id) {
           return res.data.data
@@ -71,30 +76,19 @@ class Tweets extends React.Component {
     })
   }
 
-  fetchTweets = (tagName) => {
-    const {likedTweets, page, totalPages} = this.state
-    console.log(`likedTweets.length: ${likedTweets.length}`)
-    let url = tagName ? `/api/v1/tweets.json?tag=${tagName}&page=${page}` : `/api/v1/tweets.json?page=${page}`
+  fetchTweets = () => {
+    const {likedTweets, page, totalPages, filteredTagName} = this.state
+    let url = filteredTagName ? `/api/v1/tweets.json?tag=${filteredTagName}&page=${page}` : `/api/v1/tweets.json?page=${page}`
     axios.get(url)
     .then(res => {
-      console.log(`likedTweets.map(lt => lt.id): ${likedTweets.map(lt => lt.id)}`)
-      console.log(`res.data.data.map(lt => lt.id): ${res.data.data.map(lt => lt.id)}`)
-      let sameTweets = res.data.data.every((tweet, index) => {
-        console.log(`tweet.id: ${tweet.id}, likedTweets[index] && likedTweets[index].id: ${likedTweets[index] && likedTweets[index].id}`)
-        console.log(`tweet.id == likedTweets[index] && likedTweets[index].id: ${tweet.id == likedTweets[index] && likedTweets[index].id}`)
-        return likedTweets[index] && tweet.id == likedTweets[index].id
-      })
-      console.log(`sameTweets?: ${sameTweets}`)
-
       this.setState({
-        likedTweets: sameTweets ? res.data.data : [...likedTweets, ...res.data.data],
+        likedTweets: [...likedTweets, ...res.data.data],
         totalPages: res.data.total_pages,
-        userId: res.data.data[0].attributes.user_id, // dont think this is needed
         loading: false
       })
     })
     .catch(res => {
-      console.log('error: ', res.error)
+      console.log('error in fetchTweets')
     })
   }
 

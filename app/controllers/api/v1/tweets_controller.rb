@@ -9,13 +9,11 @@ class Api::V1::TweetsController < Api::V1::BaseController
     else
       current_user.liked_tweets.includes(:tags).ordered
     end
-
     total_count = tweets.size
     page = params[:page].present? ? params[:page].to_i : 1
     total_pages = (total_count/DEFAULT_LIMIT) + 1
     offset = (page * DEFAULT_LIMIT) - DEFAULT_LIMIT
     has_more = page < total_pages
-
     limited_tweets = tweets.limit(DEFAULT_LIMIT).offset(offset)
 
     count = limited_tweets.size
