@@ -5,7 +5,7 @@ class DeleteTagButton extends React.Component {
 
   handleDelete = event => {
     event.preventDefault();
-    this.props.deleteTagging(this.props.taggingId)
+    this.props.deleteTagging(this.props.tagging)
   }
 
   render(){

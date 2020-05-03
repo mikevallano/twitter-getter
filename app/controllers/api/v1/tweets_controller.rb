@@ -1,5 +1,5 @@
 class Api::V1::TweetsController < Api::V1::BaseController
-  DEFAULT_LIMIT = 5
+  DEFAULT_LIMIT = 10
 
   def index
     tag = Tag.find_by(name: params[:tag])
@@ -23,6 +23,12 @@ class Api::V1::TweetsController < Api::V1::BaseController
 
 
     render json: count_data.merge(LikedTweetSerializer.new(limited_tweets))
+  end
+
+  def show
+    tweet = params[:id].size < 6 ? current_user.liked_tweets.find_by(id: params[:id])
+    : current_user.liked_tweets.find_by(tweet_id: params[:id])
+    render json: LikedTweetSerializer.new(tweet)
   end
 
   def create

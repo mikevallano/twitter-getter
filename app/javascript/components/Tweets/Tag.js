@@ -12,7 +12,7 @@ class Tag extends React.Component {
       <React.Fragment>
         <span className="tag-container">
           <span className='clicky' onClick={this.handleClick}>{this.props.name}</span>
-          <DeleteTagButton taggingId={this.props.taggingId} deleteTagging={this.props.deleteTagging} />
+          <DeleteTagButton tagging={this.props.tagging} deleteTagging={this.props.deleteTagging} />
         </span>
       </React.Fragment>
     )
