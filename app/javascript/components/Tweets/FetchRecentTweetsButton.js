@@ -8,7 +8,7 @@ class FetchRecentTweetsButton extends React.Component {
   render(){
     return (
       <React.Fragment>
-        <p onClick={this.handleClick}>FetchRecentTweetsButton</p>
+        <button className='btn btn-primary' onClick={this.handleClick}>Fetch Recent Tweets</button>
       </React.Fragment>
     )
   }

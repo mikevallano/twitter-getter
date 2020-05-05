@@ -143,8 +143,7 @@ class Tweets extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="container" >
-          <h1>Tweets!</h1>
+        <div className="container">
           <FetchRecentTweetsButton fetchRecentTweets={this.fetchRecentTweets}/>
           { this.state.filteredTagName ?
             <TagFilter filteredTagName={this.state.filteredTagName} clearTagFilter={this.clearTagFilter}/>
