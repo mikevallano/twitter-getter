@@ -2,13 +2,13 @@ class Api::V1::TweetsController < Api::V1::BaseController
   DEFAULT_LIMIT = 10
 
   def index
-    tag = Tag.find_by(name: params[:tag])
-
-    tweets = if tag
+    tweets = if params[:tag].present?
+      tag = Tag.find_by(name: params[:tag])
       tag.liked_tweets.where(user: current_user).includes(:tags).ordered
     else
       current_user.liked_tweets.includes(:tags).ordered
     end
+
     total_count = tweets.size
     page = params[:page].present? ? params[:page].to_i : 1
     total_pages = (total_count/DEFAULT_LIMIT) + 1
@@ -24,8 +24,7 @@ class Api::V1::TweetsController < Api::V1::BaseController
   end
 
   def show
-    tweet = params[:id].size < 6 ? current_user.liked_tweets.find_by(id: params[:id])
-    : current_user.liked_tweets.find_by(tweet_id: params[:id])
+    tweet = current_user.liked_tweets.find_by(id: params[:id])
     render json: LikedTweetSerializer.new(tweet)
   end
 

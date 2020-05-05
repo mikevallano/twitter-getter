@@ -15,6 +15,7 @@ class Tweet extends React.Component {
         />
         <TagForm
           tweet_id={this.props.tweetId}
+          likedTweetId={this.props.likedTweetId}
           user_id={this.props.userId}
           tags={this.props.tags}
           taggings={this.props.taggings}
