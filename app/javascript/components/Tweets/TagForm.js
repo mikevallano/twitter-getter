@@ -14,7 +14,8 @@ class TagForm extends React.Component {
 
     const tagging = {
       tag_names: this.state.formTagNames,
-      liked_tweet_id: this.props.tweet_id
+      liked_tweet_id: this.props.likedTweetId,
+      tweet_id: this.props.tweet_id
     }
 
     this.props.createTagging(tagging)
