@@ -8,11 +8,14 @@ class Tweet extends React.Component {
     return (
       <React.Fragment>
         <EmbededTweet tweetId={this.props.tweetId}/>
-        <Tags
-          taggings={this.props.taggings}
-          deleteTagging={this.props.deleteTagging}
-          filterByTagName={this.props.filterByTagName}
-        />
+        { this.props.taggings.length > 0 ?
+          <Tags
+            taggings={this.props.taggings}
+            deleteTagging={this.props.deleteTagging}
+            filterByTagName={this.props.filterByTagName}
+          />
+          : ''
+        }
         <TagForm
           tweet_id={this.props.tweetId}
           likedTweetId={this.props.likedTweetId}
