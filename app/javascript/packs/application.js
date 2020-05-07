@@ -8,6 +8,7 @@ require("@rails/activestorage").start()
 require("channels")
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+require('../../assets/stylesheets/pages.scss')
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference
