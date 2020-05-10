@@ -4,9 +4,9 @@ class Api::V1::TweetsController < Api::V1::BaseController
   def index
     tweets = if params[:tag].present?
       tag = Tag.find_by(name: params[:tag])
-      tag.liked_tweets.where(user: current_user).includes(:tags).ordered
+      tag.liked_tweets.where(user: current_user).includes(:tags).deleted(false).ordered
     else
-      current_user.liked_tweets.includes(:tags).ordered
+      current_user.liked_tweets.includes(:tags).deleted(false).ordered
     end
 
     total_count = tweets.size
@@ -30,5 +30,14 @@ class Api::V1::TweetsController < Api::V1::BaseController
 
   def create
     LikedTweetPopulator.new(user: current_user).fetch_recently_liked_tweets
+  end
+
+  def destroy
+    liked_tweet = LikedTweet.find_by(id: params[:id])
+    if liked_tweet.user == current_user && liked_tweet.update!(deleted_at: Time.current)
+      render body: nil, status: :no_content # https://stackoverflow.com/a/33805840
+    else
+      render json: {error: 'Could not destroy'}
+    end
   end
 end
