@@ -67,6 +67,20 @@ class Tweets extends React.Component {
       })
   }
 
+  deleteTweet = (tweetId) => {
+    axios
+    .delete(`/api/v1/tweets/${tweetId}.json`)
+    .then(res => {
+      const updatedTweets = [...this.state.likedTweets].filter(likedTweet => {
+        return likedTweet.id !== tweetId
+      })
+      this.setState({likedTweets: updatedTweets})
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
   fetchTweet = (tweetId) => {
     axios.get(`/api/v1/tweets/${tweetId}.json`)
     .then(res => {
@@ -136,6 +150,7 @@ class Tweets extends React.Component {
           taggings={likedTweet.attributes.taggings}
           createTagging={this.createTagging}
           deleteTagging={this.deleteTagging}
+          deleteTweet={this.deleteTweet}
           filterByTagName={this.filterByTagName}
         />
       )
