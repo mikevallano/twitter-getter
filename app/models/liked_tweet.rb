@@ -4,4 +4,5 @@ class LikedTweet < ApplicationRecord
   has_many :tags, through: :taggings
 
   scope :ordered, -> { order(tweet_id: :desc) }
+  scope :deleted, -> (bool) { bool ? where.not(deleted_at: nil) : where(deleted_at: nil) }
 end
