@@ -3,6 +3,7 @@ import Tweet from './Tweet'
 import TagForm from './TagForm'
 import TagFilter from './TagFilter'
 import FetchRecentTweetsButton from './FetchRecentTweetsButton'
+import TagCloud from './TagCloud'
 import axios from 'axios'
 
 class Tweets extends React.Component {
@@ -14,7 +15,8 @@ class Tweets extends React.Component {
       filteredTagName: null,
       page: 1,
       totalPages: null,
-      loading: false
+      loading: false,
+      tagsInCloud: []
     }
   }
 
@@ -111,6 +113,18 @@ class Tweets extends React.Component {
     })
   }
 
+  fetchTags = () => {
+    axios.get('/api/v1/tag_counts.json', { user_id: this.state.userId }) // or whatever url
+    .then(res => {
+      this.setState({
+        tagsInCloud: res.data.data
+      })
+    })
+    .catch(res => {
+      console.log('error in fetchTags')
+    })
+  }
+
   handleScroll = (e) => {
     const {loading, page, totalPages} = this.state
     if (loading) return
@@ -133,6 +147,7 @@ class Tweets extends React.Component {
 
   componentDidMount() {
     this.fetchTweets()
+    this.fetchTags()
     this.scrollListener = window.addEventListener('scroll', (e) => {
       this.handleScroll(e)
     })
@@ -159,12 +174,22 @@ class Tweets extends React.Component {
     return (
       <React.Fragment>
         <div className="container">
-          <FetchRecentTweetsButton fetchRecentTweets={this.fetchRecentTweets}/>
-          { this.state.filteredTagName ?
-            <TagFilter filteredTagName={this.state.filteredTagName} clearTagFilter={this.clearTagFilter}/>
-            : ''
-          }
-          {tweets}
+          <div className="row">
+            <div className="col-sm-6">
+              <FetchRecentTweetsButton fetchRecentTweets={this.fetchRecentTweets}/>
+              { this.state.filteredTagName ?
+                <TagFilter filteredTagName={this.state.filteredTagName} clearTagFilter={this.clearTagFilter}/>
+                : ''
+              }
+              {tweets}
+            </div>
+            <div className="col-sm-6 tag-column">
+              <TagCloud
+                tagsInCloud={this.state.tagsInCloud}
+                filterByTagName={this.filterByTagName}
+              />
+            </div>
+          </div>
         </div>
         <span id="page-bottom"></span>
       </React.Fragment>

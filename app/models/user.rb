@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: %i[twitter]
 
   has_many :liked_tweets
+  has_many :tags, through: :liked_tweets
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user| # TODO check what provider returns

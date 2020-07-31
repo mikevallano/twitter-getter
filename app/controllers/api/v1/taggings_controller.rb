@@ -23,6 +23,11 @@ class Api::V1::TaggingsController < Api::V1::BaseController
     end
   end
 
+  def tag_counts
+    tag_names = current_user.tags.group(:name).order(count_all: :desc).count.keys
+    render json: {data: tag_names}
+  end
+
   private
   # build this out more
   def tagging_params
