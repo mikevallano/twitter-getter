@@ -15,9 +15,7 @@ class TagCloud extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="tags-in-cloud">
           Tags Cloud: {tags}
-        </div>
       </React.Fragment>
     )
   }

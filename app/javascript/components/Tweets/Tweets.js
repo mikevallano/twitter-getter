@@ -16,8 +16,7 @@ class Tweets extends React.Component {
       page: 1,
       totalPages: null,
       loading: false,
-      // tagsInCloud: ['lolz', 'covid', 'three', 'four', 'five', 'sixerino', 'sevenz', 'eeeeeight', 'niiiner', 'tenz', 'thirteen eelvernty']
-      tagsInCloud: ['lolz', 'covid', 'three', 'four', 'five', 'sixerino', 'sevenz', 'eeeeeight', 'niiiner']
+      tagsInCloud: []
     }
   }
 
@@ -148,7 +147,7 @@ class Tweets extends React.Component {
 
   componentDidMount() {
     this.fetchTweets()
-    // this.fetchTags()
+    this.fetchTags()
     this.scrollListener = window.addEventListener('scroll', (e) => {
       this.handleScroll(e)
     })
@@ -176,7 +175,7 @@ class Tweets extends React.Component {
       <React.Fragment>
         <div className="container">
           <div className="row">
-            <div className="col-sm">
+            <div className="col-sm-6">
               <FetchRecentTweetsButton fetchRecentTweets={this.fetchRecentTweets}/>
               { this.state.filteredTagName ?
                 <TagFilter filteredTagName={this.state.filteredTagName} clearTagFilter={this.clearTagFilter}/>
@@ -184,7 +183,7 @@ class Tweets extends React.Component {
               }
               {tweets}
             </div>
-            <div className="col-sm tag-column">
+            <div className="col-sm-6 tag-column">
               <TagCloud
                 tagsInCloud={this.state.tagsInCloud}
                 filterByTagName={this.filterByTagName}
