@@ -18,7 +18,7 @@
   padding-left: 15px;
 }
 
-.tag-container {
+.tag-column .tag-container {
   padding: 7px;
   margin-top: 7px;
   margin-right: 5px;
@@ -26,6 +26,12 @@
   border-radius: 3px;
   overflow-wrap: break-word;
   display: inline-flex;
+}
+
+.tag-container {
+  padding: 7px;
+  border: 1px solid rgba(#1da1f2, 0.25);
+  border-radius: 3px;
 }
 
 
