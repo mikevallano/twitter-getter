@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Tweet from './Tweet'
-import TagForm from './TagForm'
 import TagFilter from './TagFilter'
 import FetchRecentTweetsButton from './FetchRecentTweetsButton'
 import TagCloud from './TagCloud'
@@ -23,6 +22,9 @@ class Tweets extends React.Component {
   createTagging = (tagging) => {
     axios.post('/api/v1/taggings.json', {tagging})
     .then(res => {
+      let addedTags = tagging.tag_names.split(', ')
+      let newTags = [... new Set(this.state.tagsInCloud.concat(addedTags))]
+      this.setState({tagsInCloud: newTags})
       this.fetchTweet(tagging.liked_tweet_id)
     })
   }
