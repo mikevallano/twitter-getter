@@ -11,10 +11,16 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
+
+# needed to add specifically because previous version in Gemflile.lock was broken
+gem 'sassc', '~> 2.3.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 4.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
+
+# JFC https://github.com/cotag/http-parser/issues/12
+gem 'http-parser', '~> 1.2.3'
 
 gem 'devise'
 gem 'fast_jsonapi'
