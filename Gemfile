@@ -15,7 +15,7 @@ gem 'sass-rails', '>= 6'
 # needed to add specifically because previous version in Gemflile.lock was broken
 gem 'sassc', '~> 2.3.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 5.4'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 
