@@ -1,6 +1,9 @@
 {
   "name": "twitter_api_getter",
   "private": true,
+  "engines": {
+    "node": "17.2.0"
+  },
   "dependencies": {
     "@babel/preset-react": "^7.8.3",
     "@rails/actioncable": "^6.0.0",
