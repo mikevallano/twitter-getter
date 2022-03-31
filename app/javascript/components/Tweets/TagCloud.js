@@ -1,24 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
 import TagInCloud from './TagInCloud'
 
-class TagCloud extends React.Component {
-  render() {
-    const tags = this.props.tagsInCloud.map((tagName) => {
-      return (
-        <TagInCloud
-          name={tagName}
-          key={tagName}
-          filterByTagName={this.props.filterByTagName}
-        />
-      )
-    })
-
+const TagCloud = (props) => {
+  const tags = props.tagsInCloud.map((tagName) => {
     return (
-      <React.Fragment>
-          {tags}
-      </React.Fragment>
+      <TagInCloud
+        name={tagName}
+        key={tagName}
+        filterByTagName={props.filterByTagName}
+      />
     )
-  }
+  })
+
+  return <>{tags}</>
 }
 
 export default TagCloud
