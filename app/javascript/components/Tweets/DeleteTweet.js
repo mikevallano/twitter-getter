@@ -1,16 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class DeleteTweet extends React.Component {
+const DeleteTweet = (props) => {
 
-  handleClick = (e) => {
-    this.props.deleteTweet(this.props.likedTweetId)
+  const handleClick = () => {
+    props.deleteTweet(props.likedTweetId)
   }
 
-  render(){
-    return (
-        <p onClick={this.handleClick} className='delete-tweet-btn clicky'>(x)</p>
-    )
-  }
+  return <p onClick={handleClick} className='delete-tweet-btn clicky'>(x)</p>
 }
 
 export default DeleteTweet
