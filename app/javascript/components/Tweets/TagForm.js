@@ -1,42 +1,34 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React, {useState} from 'react'
 
-class TagForm extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      formTagNames: ''
-    }
-  }
+const TagForm = (props) => {
+  const [formTagNames, setFormTagNames] = useState('')
 
-  submitForm = event => {
+  const submitForm = event => {
     event.preventDefault()
 
     const tagging = {
-      tag_names: this.state.formTagNames,
-      liked_tweet_id: this.props.likedTweetId,
-      tweet_id: this.props.tweet_id
+      tag_names: formTagNames,
+      liked_tweet_id: props.likedTweetId,
+      tweet_id: props.tweet_id
     }
 
-    this.props.createTagging(tagging)
-    this.setState({ formTagNames: ''})
+    props.createTagging(tagging)
+    setFormTagNames('')
   }
 
-  formChange = event => {
-    this.setState({ formTagNames: event.target.value });
+  const formChange = event => {
+    setFormTagNames(event.target.value)
   }
 
-  render(){
-    return (
-      <React.Fragment>
-        <div className="form-group tag-form">
-          <form onSubmit={this.submitForm} className="tag-tester">
-            <input type="text" value={this.state.formTagNames} className="form-control" placeholder="add tags" onChange={this.formChange} />
-          </form>
-        </div>
-      </React.Fragment>
-    )
-  }
+  return (
+    <>
+      <div className="form-group tag-form">
+        <form onSubmit={submitForm} className="tag-tester">
+          <input type="text" value={formTagNames} className="form-control" placeholder="add tags" onChange={formChange} />
+        </form>
+      </div>
+    </>
+  )
 }
 
 export default TagForm
