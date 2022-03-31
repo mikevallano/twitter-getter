@@ -1,17 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class FetchRecentTweetsButton extends React.Component {
-  handleClick = event => {
+const FetchRecentTweetsButton = (props) => {
+  const handleClick = event => {
     event.preventDefault()
-    this.props.fetchRecentTweets()
+    props.fetchRecentTweets()
   }
-  render(){
-    return (
-      <React.Fragment>
-        <button className='btn btn-primary' onClick={this.handleClick}>Fetch Recent Tweets</button>
-      </React.Fragment>
-    )
-  }
+
+  return (
+    <button className='btn btn-primary' onClick={handleClick}>Fetch Recent Tweets</button>
+  )
 }
 
 export default FetchRecentTweetsButton
