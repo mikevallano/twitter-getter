@@ -1,18 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class TagInCloud extends React.Component {
-  handleClick = event => {
+const TagInCloud = ({name, filterByTagName}) => {
+  const handleClick = (event) => {
     event.preventDefault();
-    this.props.filterByTagName(this.props.name)
+    filterByTagName(name)
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <span className='tag-container clicky' onClick={this.handleClick}>{this.props.name}</span>
-      </React.Fragment>
-    )
-  }
+  return <span className='tag-container clicky' onClick={handleClick}>{name}</span>
 }
 
 export default TagInCloud
