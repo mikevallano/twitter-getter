@@ -1,134 +1,138 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import Tweet from './Tweet'
 import TagFilter from './TagFilter'
 import FetchRecentTweetsButton from './FetchRecentTweetsButton'
 import TagCloud from './TagCloud'
 import axios from 'axios'
 
-class Tweets extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      likedTweets: [],
-      userId: null,
-      filteredTagName: null,
-      page: 1,
-      totalPages: null,
-      loading: false,
-      tagsInCloud: []
-    }
-  }
+const Tweets = () => {
+  const [likedTweets, setLikedTweets] = useState([])
+  const [userId, setUserId] = useState(null)
+  const [filteredTagName, setFilteredTagName] = useState(null)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [infiniteSrollFetch, setInfiniteScrollFetch] = useState(false)
+  const [tagsInCloud, setTagsInCloud] = useState([])
+  const [totalPages, setTotalPages] = useState(1)
 
-  createTagging = (tagging) => {
+  const createTagging = (tagging) => {
     axios.post('/api/v1/taggings.json', {tagging})
-    .then(res => {
+    .then(() => {
       let addedTags = tagging.tag_names.split(', ')
-      let newTags = [... new Set(this.state.tagsInCloud.concat(addedTags))]
-      this.setState({tagsInCloud: newTags})
-      this.fetchTweet(tagging.liked_tweet_id)
+      let newTags = [... new Set(tagsInCloud.concat(addedTags))]
+      setTagsInCloud(newTags)
+      fetchTweet(tagging.liked_tweet_id)
     })
   }
 
-  fetchRecentTweets = () => {
-    axios.post('/api/v1/tweets.json', {user_id: this.state.userId})
-    .then(res => {
-      this.setState({
-        page: 1,
-        filteredTagName: null,
-        loading: true,
-        likedTweets: []
-      }, this.fetchTweets)
+  const fetchRecentTweets = () => {
+    axios.post('/api/v1/tweets.json', {user_id: userId})
+    .then(() => {
+      setPage(1)
+      setFilteredTagName(null)
+      setLoading(true)
+      // setLikedTweets([])
     })
   }
 
-  filterByTagName = (tagName) => {
+  const filterByTagName = (tagName) => {
+    console.log(`tagName: ${tagName}`)
     window.scrollTo(0, 0);
-    this.setState({
-      page: 1,
-      filteredTagName: tagName,
-      loading: true,
-      likedTweets: []
-    }, this.fetchTweets)
+    setPage(1)
+    setFilteredTagName(tagName)
+    setLoading(true)
+    // setLikedTweets([])
   }
 
-  clearTagFilter = () => {
-    this.setState({
-      page: 1,
-      filteredTagName: null,
-      loading: true,
-      likedTweets: []
-    }, this.fetchTweets)
+  const clearTagFilter = () => {
+    setPage(1)
+    setFilteredTagName(null)
+    setLoading(true)
+    // setLikedTweets([])
   }
 
-  deleteTagging = (tagging) => {
+  const deleteTagging = (tagging) => {
     axios
       .delete(`/api/v1/taggings/${tagging.id}.json`)
-      .then(res => {
-        this.fetchTweet(tagging.liked_tweet_id)
+      .then(() => {
+        fetchTweet(tagging.liked_tweet_id)
       })
       .catch(err => {
         console.log(err)
       })
   }
 
-  deleteTweet = (tweetId) => {
+  const deleteTweet = (tweetId) => {
     axios
     .delete(`/api/v1/tweets/${tweetId}.json`)
-    .then(res => {
-      const updatedTweets = [...this.state.likedTweets].filter(likedTweet => {
+    .then(() => {
+      const updatedTweets = [...likedTweets].filter(likedTweet => {
         return likedTweet.id !== tweetId
       })
-      this.setState({likedTweets: updatedTweets})
+      setLikedTweets(updatedTweets)
     })
     .catch(err => {
       console.log(err)
     })
   }
 
-  fetchTweet = (tweetId) => {
+  const fetchTweet = (tweetId) => {
     axios.get(`/api/v1/tweets/${tweetId}.json`)
     .then(res => {
-      const updatedTweets = [...this.state.likedTweets].map(likedTweet => {
-        if (res.data.data.id == likedTweet.id) {
+      const updatedTweets = [...likedTweets].map(likedTweet => {
+        if (res.data.data.id === likedTweet.id) {
           return res.data.data
         } else {
           return likedTweet
         }
       })
-      this.setState({likedTweets: updatedTweets})
+      setLikedTweets(updatedTweets)
     })
   }
 
-  fetchTweets = () => {
-    const {likedTweets, page, totalPages, filteredTagName} = this.state
-    let url = filteredTagName ? `/api/v1/tweets.json?tag=${filteredTagName}&page=${page}` : `/api/v1/tweets.json?page=${page}`
+  const fetchFilteredTweets = () => {
+    const url = `/api/v1/tweets.json?tag=${filteredTagName}&page=${page}`
+    axios.get(url)
+      .then(res => {
+        setLikedTweets([...res.data.data])
+        setTotalPages(res.data.total_pages)
+        setLoading(false)
+        // setInfiniteScrollFetch(false)
+      })
+      .catch(() => {
+        console.log('error in fetchTweets')
+      })
+  }
+
+  const fetchTweets = () => {
+    console.log(`page: ${page}`)
+    console.log(`likedTweets.length in fetchTweets: ${likedTweets.length}`)
+    let url = filteredTagName ?
+      `/api/v1/tweets.json?tag=${filteredTagName}&page=${page}` :
+      `/api/v1/tweets.json?page=${page}`
     axios.get(url)
     .then(res => {
-      this.setState({
-        likedTweets: [...likedTweets, ...res.data.data],
-        totalPages: res.data.total_pages,
-        loading: false
-      })
+      setLikedTweets([...likedTweets, ...res.data.data])
+      setTotalPages(res.data.total_pages)
+      setLoading(false)
+      // setInfiniteScrollFetch(false)
     })
-    .catch(res => {
+    .catch(() => {
       console.log('error in fetchTweets')
     })
   }
 
-  fetchTags = () => {
-    axios.get('/api/v1/tag_counts.json', { user_id: this.state.userId }) // or whatever url
+  const fetchTags = () => {
+    axios.get('/api/v1/tag_counts.json', { user_id: userId })
     .then(res => {
-      this.setState({
-        tagsInCloud: res.data.data
-      })
+      setTagsInCloud(res.data.data)
     })
-    .catch(res => {
+    .catch(() => {
       console.log('error in fetchTags')
     })
   }
 
-  handleScroll = (e) => {
-    const {loading, page, totalPages} = this.state
+  const handleScroll = () => {
     if (loading) return
     if (page > totalPages) return
     const pageBottom = document.getElementById('page-bottom')
@@ -136,67 +140,76 @@ class Tweets extends React.Component {
     const pageOffset = window.pageYOffset + window.innerHeight
     const bottomBuffer = 50 // in px. buffer to prevent having to scroll to very bottom
     if (pageOffset > pageBottomOffset - bottomBuffer) {
-      this.loadMore()
+      loadMore()
     }
   }
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-      loading: true
-    }), this.fetchTweets)
+  const loadMore = () => {
+    setPage((page + 1))
+    setLoading(true)
+    setInfiniteScrollFetch(true)
   }
 
-  componentDidMount() {
-    this.fetchTweets()
-    this.fetchTags()
-    this.scrollListener = window.addEventListener('scroll', (e) => {
-      this.handleScroll(e)
+  useEffect(() => {
+    console.log('in main useEffect')
+    // fetchTweets()
+    fetchTags()
+    window.addEventListener('scroll', (event) => {
+      handleScroll(event)
     })
-  }
+  }, [])
 
-  render(){
-    const tweets = this.state.likedTweets.map((likedTweet) => {
-      return(
-        <Tweet
-          likedTweetId={likedTweet.id}
-          tweetId={likedTweet.attributes.tweet_id}
-          key={likedTweet.attributes.tweet_id}
-          userId={this.state.userId}
-          tags={likedTweet.attributes.tags}
-          taggings={likedTweet.attributes.taggings}
-          createTagging={this.createTagging}
-          deleteTagging={this.deleteTagging}
-          deleteTweet={this.deleteTweet}
-          filterByTagName={this.filterByTagName}
-        />
-      )
-    })
+  // When filteredTagName is updated, fetch tweets
+  useEffect(() => {
+    console.log('filteredTagName in specific useEffect: ', filteredTagName)
+    if (filteredTagName === null) {
+      // setLikedTweets([])
+      fetchTweets()
+    } else {
+      fetchFilteredTweets()
+    }
+  }, [filteredTagName, infiniteSrollFetch])
 
-    return (
-      <React.Fragment>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <FetchRecentTweetsButton fetchRecentTweets={this.fetchRecentTweets}/>
-              { this.state.filteredTagName ?
-                <TagFilter filteredTagName={this.state.filteredTagName} clearTagFilter={this.clearTagFilter}/>
-                : ''
-              }
-              {tweets}
-            </div>
-            <div className="col-sm-6 tag-column">
-              <TagCloud
-                tagsInCloud={this.state.tagsInCloud}
-                filterByTagName={this.filterByTagName}
-              />
-            </div>
+  const tweets = likedTweets.map((likedTweet) => {
+    return(
+      <Tweet
+        likedTweetId={likedTweet.id}
+        tweetId={likedTweet.attributes.tweet_id}
+        key={likedTweet.attributes.tweet_id}
+        userId={userId}
+        tags={likedTweet.attributes.tags}
+        taggings={likedTweet.attributes.taggings}
+        createTagging={createTagging}
+        deleteTagging={deleteTagging}
+        deleteTweet={deleteTweet}
+        filterByTagName={filterByTagName}
+      />
+    )
+  })
+
+  return (
+    <>
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-6">
+            <FetchRecentTweetsButton fetchRecentTweets={fetchRecentTweets}/>
+            { filteredTagName ?
+              <TagFilter filteredTagName={filteredTagName} clearTagFilter={clearTagFilter}/>
+              : ''
+            }
+            {tweets}
+          </div>
+          <div className="col-sm-6 tag-column">
+            <TagCloud
+              tagsInCloud={tagsInCloud}
+              filterByTagName={filterByTagName}
+            />
           </div>
         </div>
-        <span id="page-bottom"></span>
-      </React.Fragment>
-    )
-  }
+      </div>
+      <span id="page-bottom"></span>
+    </>
+  )
 }
 
 
