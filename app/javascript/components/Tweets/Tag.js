@@ -1,22 +1,19 @@
-import React, { Component } from 'react'
+import React from 'react'
 import DeleteTagButton from './DeleteTagButton'
 
-class Tag extends React.Component {
-  handleClick = event => {
+const Tag = (props) => {
+  const handleClick = event => {
     event.preventDefault();
-    this.props.filterByTagName(this.props.name)
+    props.filterByTagName(props.name)
   }
-
-  render() {
-    return (
-      <React.Fragment>
-        <span className="tag-container">
-          <span className='clicky' onClick={this.handleClick}>{this.props.name}</span>
-          <DeleteTagButton tagging={this.props.tagging} deleteTagging={this.props.deleteTagging} />
-        </span>
-      </React.Fragment>
-    )
-  }
+  return (
+    <>
+      <span className="tag-container">
+        <span className='clicky' onClick={handleClick}>{props.name}</span>
+        <DeleteTagButton tagging={props.tagging} deleteTagging={props.deleteTagging} />
+      </span>
+    </>
+  )
 }
 
 export default Tag

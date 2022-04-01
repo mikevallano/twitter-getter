@@ -1,22 +1,19 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React from 'react'
 
-class DeleteTagButton extends React.Component {
+const DeleteTagButton = (props) => {
 
-  handleDelete = event => {
+  const handleDelete = event => {
     event.preventDefault();
-    this.props.deleteTagging(this.props.tagging)
+    props.deleteTagging(props.tagging)
   }
 
-  render(){
-    return (
-      <React.Fragment>
-        <span className='clicky' onClick={this.handleDelete}>
-          (x)
-        </span>
-      </React.Fragment>
-    )
-  }
+  return (
+    <>
+      <span className='clicky' onClick={handleDelete}>
+        (x)
+      </span>
+    </>
+  )
 }
 
 export default DeleteTagButton

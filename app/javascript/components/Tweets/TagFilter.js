@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class TagFilter extends React.Component {
-  handleClick = event => {
+const TagFilter = (props) => {
+  const handleClick = event => {
     event.preventDefault()
-    this.props.clearTagFilter()
+    props.clearTagFilter()
   }
 
-  render(){
-    return (
-      <React.Fragment>
-        <p>Filtered by tag: {this.props.filteredTagName} <span className='clicky' onClick={this.handleClick}>(x)</span></p>
-      </React.Fragment>
-    )
-  }
+  return (
+    <>
+      <p>Filtered by tag: {props.filteredTagName}
+        <span className='clicky' onClick={handleClick}>(x)</span>
+      </p>
+    </>
+  )
 }
 
 export default TagFilter
