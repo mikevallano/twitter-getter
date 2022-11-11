@@ -1,6 +1,6 @@
 class CreateTagsService
-  def initialize(tag_names_list)
-    @tag_names_list = tag_names_list
+  def initialize(tag_names:)
+    @tag_names_list = tag_names
   end
 
   def stripped_tags
