@@ -94,7 +94,7 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     hashie (5.0.0)
     http (4.4.1)
@@ -127,7 +127,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.16.3)
+    minitest (5.17.0)
     msgpack (1.6.0)
     multipart-post (2.2.3)
     naught (1.1.0)
